@@ -1,48 +1,30 @@
-INCLUDE Irvine32.inc
-
+.model small
+.stack 100h
 .data
-    prompt BYTE "Enter a 32-bit integer: ", 0
-    msgSum BYTE "The total sum in EAX is: ", 0
-
+    str1 db 'Nutech', 0Dh, 0Ah, '$'
+    str2 db 'University', 0Dh, 0Ah, '$'
 .code
-main PROC
-    ; --- Input for EAX ---
-    mov  edx, OFFSET prompt
-    call WriteString
-    call ReadInt            ; User input goes into EAX
-    push eax                ; Temporarily save EAX so we can use it for next prompt
+main proc
+    mov ax, @data
+    mov ds, ax
 
-    ; --- Input for EBX ---
-    mov  edx, OFFSET prompt
-    call WriteString
-    call ReadInt
-    mov  ebx, eax            ; Move input to EBX
+    mov dx, offset str1
+    mov ah, 09h
+    int 21h
 
-    ; --- Input for ECX ---
-    mov  edx, OFFSET prompt
-    call WriteString
-    call ReadInt
-    mov  ecx, eax            ; Move input to ECX
+    mov dx, offset str2
+    mov ah, 09h
+    int 21h
 
-    ; --- Input for EDX ---
-    mov  edx, OFFSET prompt
-    call WriteString
-    call ReadInt
-    mov  edx, eax            ; Move input to EDX
+    mov dx, offset str1
+    mov ah, 09h
+    int 21h
 
-    ; --- Restore EAX and Perform Addition ---
-    pop  eax                ; Get the first input back into EAX
-    
-    add  eax, ebx           ; EAX = EAX + EBX
-    add  eax, ecx           ; EAX = EAX + ECX
-    add  eax, edx           ; EAX = EAX + EDX
+    mov dx, offset str2
+    mov ah, 09h
+    int 21h
 
-    ; --- Display Result ---
-    mov  edx, OFFSET msgSum
-    call WriteString
-    call WriteDec           ; Display final sum in EAX
-    call Crlf
-
-    exit
-main ENDP
-END main
+    mov ah, 4Ch
+    int 21h
+main endp               
+end main
